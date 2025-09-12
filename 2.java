@@ -1,22 +1,25 @@
-// Разделение строки на заглавные и строчные буквы
+// Разделение  массива на буквы и числа
 public class Main {
     public static void main(String[] args) {
-        String stroka = "AaBbCcDd";   // ishodnaya stroka
-        String bolshie = "";          // zaglavnye bukvy
-        String malen = "";            // strochnye bukvy
+        String[] massiv = {"a", "1", "b", "2", "c", "3"}; // ishodnyi massiv
+        String[] bukvy = new String[3];   // massiv dlya bukv
+        String[] chisla = new String[3];  // massiv dlya chisel
 
-        for (int i = 0; i < stroka.length(); i++) {
+        int bi = 0, ci = 0; // schetchiki
+
+        for (int i = 0; i < massiv.length; i++) {
             if (i % 2 == 0)
-                bolshie += stroka.charAt(i);
+                bukvy[bi++] = massiv[i];
             else
-                malen += stroka.charAt(i);
+                chisla[ci++] = massiv[i];
         }
 
-        System.out.println("Заглавные: " + bolshie);
-        System.out.println("Строчные: " + malen);
+        System.out.print("Буквы: ");
+        for (String s : bukvy) System.out.print(s + " ");
+        System.out.print("\nЧисла: ");
+        for (String s : chisla) System.out.print(s + " ");
     }
 }
-
 // • Исходный массив: {"a", "1", "b", "2", "c", "3"}.
 //  • Смотрим элементы по индексам:
 //  • Чётные → "a", "b", "c" (это буквы).
