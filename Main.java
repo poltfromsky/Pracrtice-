@@ -1,3 +1,4 @@
+// Разделение строки на заглавные и строчные буквы
 public class Main {
     public static void main(String[] args) {
         String[] massiv = {"a", "1", "b", "2", "c", "3"}; // ishodnyi massiv
@@ -19,3 +20,11 @@ public class Main {
         for (String s : chisla) System.out.print(s + " ");
     }
 }
+
+// • Строка "AaBbCcDd" — это набор символов.
+//  • Считаем их по индексам (0, 1, 2, …).
+//  • Чётные индексы → символы A, B, C, D.
+//  • Нечётные индексы → символы a, b, c, d.
+//  • В итоге:
+//  • Заглавные: ABCD
+//  • Строчные: abcd.
