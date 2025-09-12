@@ -1,26 +1,21 @@
 // Разделение строки на заглавные и строчные буквы
 public class Main {
     public static void main(String[] args) {
-        String[] massiv = {"a", "1", "b", "2", "c", "3"}; // ishodnyi massiv
-        String[] bukvy = new String[3];   // massiv dlya bukv
-        String[] chisla = new String[3];  // massiv dlya chisel
+        String stroka = "AaBbCcDd";   // ishodnaya stroka
+        String bolshie = "";          // zaglavnye bukvy
+        String malen = "";            // strochnye bukvy
 
-        int bi = 0, ci = 0; // schetchiki
-
-        for (int i = 0; i < massiv.length; i++) {
+        for (int i = 0; i < stroka.length(); i++) {
             if (i % 2 == 0)
-                bukvy[bi++] = massiv[i];
+                bolshie += stroka.charAt(i);
             else
-                chisla[ci++] = massiv[i];
+                malen += stroka.charAt(i);
         }
 
-        System.out.print("Bukvy: ");
-        for (String s : bukvy) System.out.print(s + " ");
-        System.out.print("\nChisla: ");
-        for (String s : chisla) System.out.print(s + " ");
+        System.out.println("Заглавные: " + bolshie);
+        System.out.println("Строчные: " + malen);
     }
 }
-
 // • Строка "AaBbCcDd" — это набор символов.
 //  • Считаем их по индексам (0, 1, 2, …).
 //  • Чётные индексы → символы A, B, C, D.
