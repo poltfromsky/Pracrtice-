@@ -17,6 +17,8 @@ int main() {
 
 
 #массив java
+
+
 public class Main {
     public static void main(String[] args) {
         // Массив из 5 целых чисел
