@@ -1,4 +1,4 @@
-// Разделение строки на заглавные и строчные буквы
+// Разделение строки на заглавные и строчные буквы на джава
 public class Main {
     public static void main(String[] args) {
         String stroka = "AaBbCcDd";   // ishodnaya stroka
