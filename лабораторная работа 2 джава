@@ -1,0 +1,28 @@
+// Задача 1: Создание и вывод элементов однонаправленного списка
+// Реализовать простой однонаправленный список и вывести его элементы.
+class Node {
+    int data;       // данные
+    Node next;      // ссылка на следующий элемент
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Создаем три узла
+        Node head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+
+        // Выводим список
+        System.out.print("Элементы списка: ");
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+    }
+}
