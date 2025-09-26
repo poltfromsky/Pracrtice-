@@ -1,0 +1,46 @@
+// Задача 2: Добавление элемента в конец списка с++
+#include <iostream>
+using namespace std;
+
+// Структура узла списка
+struct Node {
+    int data;
+    Node* next;
+};
+
+// Функция добавления нового элемента в конец
+void append(Node*& head, int value) {
+    Node* newNode = new Node{value, nullptr};
+    if (head == nullptr) {
+        head = newNode; // если список пуст
+        return;
+    }
+    Node* current = head;
+    while (current->next != nullptr) {
+        current = current->next;
+    }
+    current->next = newNode;
+}
+
+// Функция вывода списка
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    Node* head = nullptr;
+
+    append(head, 10);
+    append(head, 20);
+    append(head, 30);
+
+    cout << "Список после добавления элементов: ";
+    printList(head);
+
+    return 0;
+}
