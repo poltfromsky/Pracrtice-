@@ -1,0 +1,52 @@
+import java.util.*;
+
+class MinHeap {
+    private List<Integer> heap = new ArrayList<>();  // список для хранения элементов кучи
+    
+    // Вставка нового элемента в кучу
+    public void insert(int val) {
+        heap.add(val);  // добавляем элемент в конец списка
+        
+        // Восстанавливаем свойство кучи: поднимаем элемент вверх
+        // пока он меньше своего родителя
+        for(int i = heap.size()-1; i > 0 && heap.get(i) < heap.get((i-1)/2); i = (i-1)/2)
+            Collections.swap(heap, i, (i-1)/2);  // меняем местами с родителем
+    }
+    
+    // Извлечение минимального элемента (корня)
+    public int extractMin() {
+        int min = heap.get(0);  // сохраняем минимальный элемент (корень)
+        heap.set(0, heap.get(heap.size()-1));  // заменяем корень последним элементом
+        heap.remove(heap.size()-1);  // удаляем последний элемент
+        
+        // Восстанавливаем свойство кучи: опускаем новый корень вниз
+        int i = 0;
+        while(2*i+1 < heap.size()) {  // пока есть хотя бы один потомок
+            int child = 2*i+1;  // левый потомок
+            
+            // Если есть правый потомок и он меньше левого, выбираем его
+            if(child+1 < heap.size() && heap.get(child+1) < heap.get(child)) 
+                child++;
+            
+            // Если текущий элемент уже меньше потомков, выходим
+            if(heap.get(i) <= heap.get(child)) 
+                break;
+                
+            Collections.swap(heap, i, child);  // меняем местами с меньшим потомком
+            i = child;  // переходим к следующему уровню
+        }
+        return min;  // возвращаем минимальный элемент
+    }
+    
+    public static void main(String[] args) {
+        MinHeap h = new MinHeap();  // создаем min-кучу
+        
+        // Добавляем элементы в кучу
+        h.insert(3); 
+        h.insert(1); 
+        h.insert(2);
+        
+        // Извлекаем и выводим минимальный элемент
+        System.out.print(h.extractMin()); // Выведет: 1
+    }
+}
