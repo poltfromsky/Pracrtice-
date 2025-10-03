@@ -1,0 +1,139 @@
+import java.util.*;
+
+public class BinaryHeap<T> {
+    // Внутреннее хранилище кучи — динамический массив
+    private ArrayList<T> data;
+    // Компаратор для управления порядком (max-heap или min-heap)
+    private Comparator<? super T> cmp;
+
+    // Конструктор по умолчанию — max-heap (использует Comparable)
+    public BinaryHeap() {
+        this(null);
+    }
+
+    // Конструктор с явным компаратором (можно задать min-heap или max-heap)
+    public BinaryHeap(Comparator<? super T> comparator) {
+        this.data = new ArrayList<>();
+        this.cmp = comparator;
+    }
+
+    // Построение кучи из коллекции (heapify за O(n))
+    public BinaryHeap(Collection<? extends T> coll, Comparator<? super T> comparator) {
+        this.data = new ArrayList<>(coll);
+        this.cmp = comparator;
+        heapify(); // превращаем массив в кучу
+    }
+
+    // Возвращает количество элементов
+    public int size() { return data.size(); }
+
+    // Проверка на пустоту
+    public boolean isEmpty() { return data.isEmpty(); }
+
+    // Доступ к корню (минимум или максимум)
+    public T peek() {
+        if (data.isEmpty()) throw new NoSuchElementException("Heap is empty");
+        return data.get(0);
+    }
+
+    // Добавление нового элемента в кучу
+    public void add(T value) {
+        data.add(value);                // вставляем в конец массива
+        siftUp(data.size() - 1);        // "просеиваем" вверх, чтобы восстановить свойство кучи
+    }
+
+    // Извлечение корня кучи
+    public T poll() {
+        if (data.isEmpty()) throw new NoSuchElementException("Heap is empty");
+        T root = data.get(0);           // сохраняем корень
+        T last = data.remove(data.size() - 1); // удаляем последний элемент
+        if (!data.isEmpty()) {
+            data.set(0, last);          // перемещаем последний элемент в корень
+            siftDown(0);                // "просеиваем" вниз, чтобы восстановить порядок
+        }
+        return root;
+    }
+
+    // Построение кучи из массива (O(n))
+    private void heapify() {
+        int n = data.size();
+        // Начинаем с последнего неполного родителя и "просеиваем вниз"
+        for (int i = parent(n - 1); i >= 0; --i) {
+            siftDown(i);
+        }
+    }
+
+    // Вспомогательная функция — подъём элемента вверх
+    private void siftUp(int idx) {
+        T value = data.get(idx);
+        while (idx > 0) {
+            int p = parent(idx);
+            T parentVal = data.get(p);
+            // если родитель "лучше" (например, больше в max-heap), выходим
+            if (compare(parentVal, value) >= 0) break;
+            // иначе меняем местами
+            data.set(idx, parentVal);
+            idx = p;
+        }
+        data.set(idx, value);
+    }
+
+    // Вспомогательная функция — опускание элемента вниз
+    private void siftDown(int idx) {
+        int n = data.size();
+        T value = data.get(idx);
+        while (true) {
+            int l = left(idx), r = right(idx);
+            int best = idx;
+            // выбираем наибольшего (или наименьшего) среди детей
+            if (l < n && compare(data.get(l), data.get(best)) > 0) best = l;
+            if (r < n && compare(data.get(r), data.get(best)) > 0) best = r;
+            if (best == idx) break; // если порядок соблюдён — стоп
+            data.set(idx, data.get(best));
+            idx = best;
+        }
+        data.set(idx, value);
+    }
+
+    // Универсальное сравнение с учётом Comparator или Comparable
+    @SuppressWarnings("unchecked")
+    private int compare(T a, T b) {
+        if (cmp != null) return cmp.compare(a, b);
+        return ((Comparable<? super T>) a).compareTo(b);
+    }
+
+    // Индексы потомков и родителя
+    private int left(int i) { return 2 * i + 1; }
+    private int right(int i) { return 2 * i + 2; }
+    private int parent(int i) { return (i - 1) / 2; }
+
+    // Для отладки — печать массива
+    @Override
+    public String toString() {
+        return data.toString();
+    }
+
+    // Пример использования
+    public static void main(String[] args) {
+        // Max-heap (по умолчанию)
+        BinaryHeap<Integer> maxHeap = new BinaryHeap<>();
+
+maxHeap.add(5);
+        maxHeap.add(3);
+        maxHeap.add(10);
+        maxHeap.add(1);
+        System.out.println("Max-heap: " + maxHeap);
+        System.out.println("Peek: " + maxHeap.peek()); // 10
+        System.out.println("Poll: " + maxHeap.poll()); // 10
+        System.out.println("After poll: " + maxHeap);
+
+        // Min-heap (используем Comparator.reverseOrder)
+        BinaryHeap<Integer> minHeap = new BinaryHeap<>(Comparator.reverseOrder());
+        minHeap.add(5);
+        minHeap.add(3);
+        minHeap.add(10);
+        minHeap.add(1);
+        System.out.println("Min-heap: " + minHeap);
+        System.out.println("Peek: " + minHeap.peek()); // 1
+    }
+}
