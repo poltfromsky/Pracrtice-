@@ -1,0 +1,75 @@
+#include <iostream>
+#include <vector>
+#include <functional>
+using namespace std;
+# реализация
+class BinaryHeap {
+    vector<int> heap;  // массив для хранения элементов кучи
+    function<bool(int, int)> comp;  // функция сравнения для min/max heap
+    
+    // Подъем элемента на правильную позицию
+    void siftUp(int i) {
+        // Пока не дошли до корня и нарушено свойство кучи
+        while(i > 0 && comp(heap[i], heap[(i-1)/2])) {
+            swap(heap[i], heap[(i-1)/2]);  // меняем с родителем
+            i = (i-1)/2;  // переходим к родителю
+        }
+    }
+    
+    // Опускание элемента на правильную позицию
+    void siftDown(int i) {
+        // Пока есть хотя бы один потомок
+        while(2*i+1 < heap.size()) {
+            int child = 2*i+1;  // левый потомок
+            // Если правый потомок существует и "лучше" левого
+            if(child+1 < heap.size() && comp(heap[child+1], heap[child])) 
+                child++;  // выбираем правого потомка
+            // Если свойство кучи не нарушено - выходим
+            if(!comp(heap[child], heap[i])) break;
+            swap(heap[i], heap[child]);  // меняем с потомком
+            i = child;  // переходим к потомку
+        }
+    }
+
+public:
+    // Конструктор: true для min-heap, false для max-heap
+    BinaryHeap(bool isMinHeap = true) : comp(isMinHeap ? less<int>() : greater<int>()) {}
+    
+    // Добавление элемента
+    void push(int val) {
+        heap.push_back(val);  // добавляем в конец
+        siftUp(heap.size()-1);  // восстанавливаем свойства
+    }
+    
+    // Извлечение корневого элемента
+    int pop() {
+        int top = heap[0];  // сохраняем корень
+        heap[0] = heap.back();  // заменяем корень последним элементом
+        heap.pop_back();  // удаляем последний элемент
+        if(!heap.empty()) siftDown(0);  // восстанавливаем свойства
+        return top;
+    }
+    
+    // Проверка на пустоту
+    bool empty() { return heap.empty(); }
+    
+    // Вывод содержимого кучи
+    void print() {
+        for(int val : heap) cout << val << " ";
+        cout << endl;
+    }
+};
+
+int main() {
+    cout << "Min-Heap: ";
+    BinaryHeap minHeap(true);  // создаем min-heap
+    minHeap.push(5); minHeap.push(2); minHeap.push(8); minHeap.push(1); minHeap.push(4);
+    minHeap.print();  // выводим содержимое кучи
+    
+    cout << "Sorted: ";
+    while(!minHeap.empty()) cout << minHeap.pop() << " ";  // извлекаем в отсортированном порядке
+    cout << endl;
+    
+    cout << "Max-Heap: ";
+    BinaryHeap maxHeap(false);  // создаем max-heap
+    maxHeap.push(3); maxHeap.push(1); maxHeap.push(4); maxHeap.push(1); maxHeap.push(5);
